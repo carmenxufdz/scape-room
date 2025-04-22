@@ -5,9 +5,10 @@ TagManager:
   serializedVersion: 3
   tags:
   - Collectionable
-  - Door
   - Window
   - Interactuable
+  - Door
+  - Inspectionable
   layers:
   - Default
   - TransparentFX

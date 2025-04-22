@@ -2728,6 +2728,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8229381180640938747, guid: b200f6587d118224eba8467281481800,
         type: 3}
+      propertyPath: m_RaycastMask.m_Bits
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 8229381180640938747, guid: b200f6587d118224eba8467281481800,
+        type: 3}
       propertyPath: m_EnableStabilization
       value: 1
       objectReference: {fileID: 0}

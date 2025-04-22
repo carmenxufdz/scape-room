@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8660500422670840814}
   - component: {fileID: 6356371732308176083}
   - component: {fileID: 3089460304250549704}
+  - component: {fileID: 1428211898490483005}
   m_Layer: 0
   m_Name: balcony door
   m_TagString: Window
@@ -86,3 +87,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1428211898490483005
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7671075694814425747}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.013471431, y: 0.00026528345, z: 0.019667875}
+  m_Center: {x: 0.0032872963, y: -0.016005907, z: 0.008001842}

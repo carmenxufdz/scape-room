@@ -12,10 +12,7 @@ public class TreasureBox : MonoBehaviour, Interactable
 
     public void Interact()
     {
-        if (isOpen) 
-        {
-            this.GetComponent<Collider>().enabled = false;
-        }
+        if (isOpen) this.GetComponent<Collider>().enabled = false;
         else if (PlayerManager.Instance.IsHoldingItem(requiredItemName))
         {
             // Abre la caja en primer plano
@@ -25,7 +22,7 @@ public class TreasureBox : MonoBehaviour, Interactable
             this.GetComponent<Collider>().enabled = false;
             NotificationManager.Instance.ShowMessage("La caja se abrió.");
         }
-        else if(PlayerManager.Instance.IsHoldingItem())
+        else if (PlayerManager.Instance.IsHoldingItem())
         {
             NotificationManager.Instance.ShowMessage("Este objeto no hace nada.");
         }

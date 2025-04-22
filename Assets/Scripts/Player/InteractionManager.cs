@@ -11,6 +11,13 @@ public class InteractionManager : MonoBehaviour
     public GameObject interactionPanel; // UI con botón de "atrás"
     public GameObject backButton;
 
+
+    // Campos para el keypad
+    private Transform keypadHome;         // el padre original del keypad
+    private Vector3 keypadLocalPos;     // posición local original
+    private Quaternion keypadLocalRot;     // rotación local original
+
+    // Campos genéricos para cualquier objeto
     private Transform originalParent;
     private Vector3 originalPosition;
     private Quaternion originalRotation;
@@ -32,11 +39,12 @@ public class InteractionManager : MonoBehaviour
         // Si hay un objeto instanciado, permitir rotarlo con touch o mouse
         if (currentObject != null)
         {
-            // Permitir rotar el objeto
-            HandleRotation();
-
-            // Permitir tocar los objetos dentro del objeto instanciado
             HandleObjectInteraction();
+
+            if (currentObject.CompareTag("Inspectionable"))
+            {
+                HandleRotation();
+            }
         }
         else
         {
@@ -138,11 +146,15 @@ public class InteractionManager : MonoBehaviour
                         Destroy(touchedObject);
                     }
                 }
-                else if (touchedObject.CompareTag("Interactuable"))
+                else if (touchedObject.CompareTag("Interactuable") || touchedObject.CompareTag("Inspectionable"))
                 {
                     ShowObject(touchedObject);
                 }
-                else if (touchedObject.CompareTag("Door") || touchedObject.CompareTag("Window"))
+                else if (touchedObject.CompareTag("Door"))
+                {
+                    touchedObject.GetComponent<Interactable>().Interact();
+                }
+                else if (touchedObject.CompareTag("Window"))
                 {
                     NotificationManager.Instance.ShowMessage("Esta cerrado.");
                 }
@@ -157,31 +169,59 @@ public class InteractionManager : MonoBehaviour
     {
         if (currentObject != null) return;
 
+        // guardamos padre/pos/rot mundiales por si sirve en otros objetos
         originalParent = obj.transform.parent;
         originalPosition = obj.transform.position;
         originalRotation = obj.transform.rotation;
-
         currentObject = obj;
 
+        // **Si es el keypad**, además guardamos su padre y su localTransform
+        var kc = obj.GetComponent<KeypadController>();
+        if (kc != null)
+        {
+            keypadHome = obj.transform.parent;
+            keypadLocalPos = obj.transform.localPosition;
+            keypadLocalRot = obj.transform.localRotation;
+        }
+
+        // lo enviamos al foco
         obj.transform.SetParent(focusPoint);
         obj.transform.localPosition = Vector3.zero;
-        obj.transform.localRotation = Quaternion.identity;
+
+        // gira solo el keypad 180° en Y
+        if (kc != null)
+            obj.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+        else
+            obj.transform.localRotation = Quaternion.identity;
 
         interactionPanel.SetActive(true);
         backButton.SetActive(true);
     }
 
+
     public void BackToRoom()
     {
-        if (currentObject != null)
+        if (currentObject == null) return;
+
+        // **Si es el keypad**, restauramos su padre y su localTransform guardado
+        if (currentObject.GetComponent<KeypadController>() != null && keypadHome != null)
         {
+            currentObject.transform.SetParent(keypadHome);
+            currentObject.transform.localPosition = keypadLocalPos;
+            currentObject.transform.localRotation = keypadLocalRot;
+        }
+        else
+        {
+            // resto de objetos: restauración genérica
             currentObject.transform.SetParent(originalParent);
             currentObject.transform.position = originalPosition;
             currentObject.transform.rotation = originalRotation;
-            currentObject.GetComponent<Collider>().enabled = true;
-
-            currentObject = null;
         }
+
+        // reactiva el collider y limpia
+        var col = currentObject.GetComponent<Collider>();
+        if (col != null) col.enabled = true;
+        currentObject = null;
 
         interactionPanel.SetActive(false);
         backButton.SetActive(false);
