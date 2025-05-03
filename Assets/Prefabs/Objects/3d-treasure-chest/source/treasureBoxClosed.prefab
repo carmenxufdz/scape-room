@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1922026583412440142}
   - component: {fileID: 855129425805737156}
   - component: {fileID: 5987983158153532960}
-  - component: {fileID: 4021289426057747139}
+  - component: {fileID: 68410109251596755}
   m_Layer: 0
   m_Name: treasureBoxClosed
   m_TagString: Untagged
@@ -87,8 +87,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4021289426057747139
-BoxCollider:
+--- !u!64 &68410109251596755
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -105,6 +105,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.04899388, y: 0.024383808, z: 0.037352346}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7449640634751881657, guid: ce98b15ba66b2674a8ab0685e1cea4a9, type: 3}

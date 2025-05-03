@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.XR.ARFoundation.Samples; // o donde tengas definida la interfaz Interactable
 
-public class KeypadButton : MonoBehaviour, Interactable
+public class KeypadButton : MonoBehaviour, IInteractable
 {
     [Tooltip("Puede ser '0'…'9', o 'CLEAR', o 'OK'")]
     public string valor;

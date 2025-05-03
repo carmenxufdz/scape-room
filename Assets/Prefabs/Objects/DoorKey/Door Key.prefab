@@ -90,11 +90,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0658bfdb653a72346b638501d827bf1d,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7472844030004631320}
+      addedObject: {fileID: 8116468324016909152}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0658bfdb653a72346b638501d827bf1d,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8116468324016909152}
+      addedObject: {fileID: 4270890037843339645}
   m_SourcePrefab: {fileID: 100100000, guid: 0658bfdb653a72346b638501d827bf1d, type: 3}
 --- !u!1 &4139133077146103826 stripped
 GameObject:
@@ -102,8 +102,21 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3868678165573520707}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &7472844030004631320
-BoxCollider:
+--- !u!114 &8116468324016909152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4139133077146103826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4811adb7e6b212d4a9f976aa2dd95fa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 7fa9c604458f05f419dd4d9fec6d4f93, type: 2}
+--- !u!64 &4270890037843339645
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -120,19 +133,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.008532534, y: 0.0012094452, z: 0.018884113}
-  m_Center: {x: 0.00006196089, y: 0, z: 0.0022261024}
---- !u!114 &8116468324016909152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4139133077146103826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4811adb7e6b212d4a9f976aa2dd95fa5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 7fa9c604458f05f419dd4d9fec6d4f93, type: 2}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3663908890257169038, guid: 0658bfdb653a72346b638501d827bf1d, type: 3}
