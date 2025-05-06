@@ -10,6 +10,9 @@ public class KeypadController : MonoBehaviour, IInspectable
     public string contraseñaCorrecta = "2709";
     private string entradaActual = "";
 
+    public AudioClip keyPadSound;
+    public AudioSource audioSource;
+
     private bool isOpen = false;
 
     public SafeBox safeBox;
@@ -47,7 +50,7 @@ public class KeypadController : MonoBehaviour, IInspectable
     public void IngresarNumero(string numero)
     {
         if (isOpen) return;
-
+        audioSource.PlayOneShot(keyPadSound);
         if (entradaActual.Length < contraseñaCorrecta.Length)
         {
             entradaActual += numero;
@@ -59,6 +62,7 @@ public class KeypadController : MonoBehaviour, IInspectable
     {
         if (isOpen) return;
         // Elimina el último carácter
+        audioSource.PlayOneShot(keyPadSound);
         entradaActual = entradaActual.Substring(0, entradaActual.Length - 1);
         // Actualiza la pantalla
         pantalla.text = entradaActual;
@@ -68,7 +72,7 @@ public class KeypadController : MonoBehaviour, IInspectable
     public void VerificarContraseña()
     {
         if (isOpen) return;
-
+        audioSource.PlayOneShot(keyPadSound);
         if (entradaActual == contraseñaCorrecta)
         {
             isOpen = true;

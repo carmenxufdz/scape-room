@@ -8,15 +8,18 @@ public class InteractionManager : MonoBehaviour
 {
     private Camera arCamera;
 
-    public Transform focusPoint; // Empty GameObject frente a la cámara (local z=0.5 aprox)
-    public GameObject interactionPanel; // UI con botón de "atrás"
+    public Transform focusPoint; 
+    public GameObject interactionPanel; 
     public GameObject backButton;
 
     private GameObject currentObject;
 
-    [SerializeField, Tooltip("Factor de margen visual al enfocar el objeto (1.1 = 10% más lejos)")]
-    private float focusPaddingFactor = 1.1f; // Puedes ajustar esto desde el Inspector
+    private float rotationSpeed = 0.2f;
+    private bool isDragging = false;
+    private Vector2 lastInputPosition;
 
+    private float focusPaddingFactor = 1.25f; 
+    private float minimumDistance = 0.2f; // distancia mínima absoluta
 
 
     void Start()
@@ -56,27 +59,56 @@ public class InteractionManager : MonoBehaviour
 
     void HandleRotation()
     {
-        float rotationSpeed = 0.2f;
-
         // Touch (móvil)
         if (Touchscreen.current != null && Touchscreen.current.touches.Count > 0)
         {
             var touch = Touchscreen.current.touches[0];
+            var phase = touch.phase.ReadValue();
+            var position = touch.position.ReadValue();
 
-            if (touch.phase.ReadValue() == UnityEngine.InputSystem.TouchPhase.Moved)
+            if (phase == UnityEngine.InputSystem.TouchPhase.Began)
             {
-                Vector2 delta = touch.delta.ReadValue();
-                currentObject.transform.Rotate(Vector3.up, -delta.x * rotationSpeed, Space.World);
-                currentObject.transform.Rotate(Vector3.right, delta.y * rotationSpeed, Space.World);
+                isDragging = true;
+                lastInputPosition = position;
+            }
+            else if (phase == UnityEngine.InputSystem.TouchPhase.Moved && isDragging)
+            {
+                Vector2 delta = position - lastInputPosition;
+
+                // Rota el objeto en su espacio local para que el giro sea coherente
+                currentObject.transform.Rotate(Vector3.up, -delta.x * rotationSpeed, Space.Self);
+                currentObject.transform.Rotate(Vector3.right, delta.y * rotationSpeed, Space.Self);
+
+                lastInputPosition = position;
+            }
+            else if (phase == UnityEngine.InputSystem.TouchPhase.Ended || phase == UnityEngine.InputSystem.TouchPhase.Canceled)
+            {
+                isDragging = false;
             }
         }
 
         // Mouse (Editor o PC)
-        if (Mouse.current != null && Mouse.current.leftButton.isPressed)
+        if (Mouse.current != null)
         {
-            Vector2 delta = Mouse.current.delta.ReadValue();
-            currentObject.transform.Rotate(Vector3.up, -delta.x * rotationSpeed, Space.World);
-            currentObject.transform.Rotate(Vector3.right, delta.y * rotationSpeed, Space.World);
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                isDragging = true;
+                lastInputPosition = Mouse.current.position.ReadValue();
+            }
+            else if (Mouse.current.leftButton.isPressed && isDragging)
+            {
+                Vector2 currentPos = Mouse.current.position.ReadValue();
+                Vector2 delta = currentPos - lastInputPosition;
+
+                currentObject.transform.Rotate(Vector3.up, -delta.x * rotationSpeed, Space.Self);
+                currentObject.transform.Rotate(Vector3.right, delta.y * rotationSpeed, Space.Self);
+
+                lastInputPosition = currentPos;
+            }
+            else if (Mouse.current.leftButton.wasReleasedThisFrame)
+            {
+                isDragging = false;
+            }
         }
     }
 
@@ -201,33 +233,50 @@ public class InteractionManager : MonoBehaviour
         backButton.SetActive(false);
     }
 
+    /// <summary>
+    /// Coloca el `focusPoint` a una distancia adecuada frente a la cámara para encuadrar completamente
+    /// un objeto 3D en la vista, usando su tamaño real y el FOV de la cámara.
+    /// Si el objeto es muy pequeño, se usa una distancia mínima configurable para evitar que quede demasiado cerca.
+    /// </summary>
     void PositionFocusPointForObject(GameObject obj)
     {
         Renderer renderer = obj.GetComponentInChildren<Renderer>();
         if (renderer == null)
         {
             Debug.LogWarning("No se encontró un Renderer para calcular el tamaño");
-            focusPoint.position = arCamera.transform.position + arCamera.transform.forward * 0.5f;
+            focusPoint.position = arCamera.transform.position + arCamera.transform.forward * minimumDistance;
             return;
         }
 
         Bounds bounds = renderer.bounds;
-        float objectHeight = bounds.size.y;
+        Vector3 size = bounds.size;
+        float objectHeight = size.y;
+        float objectWidth = size.x;
         float objectRadius = bounds.extents.magnitude;
 
-        float fovRadians = arCamera.fieldOfView * Mathf.Deg2Rad;
-        float distanceByHeight = objectHeight / (2.0f * Mathf.Tan(fovRadians / 2.0f));
-        float distanceByRadius = objectRadius / Mathf.Sin(fovRadians / 2.0f);
+        if (size.magnitude < 0.05f)
+        {
+            focusPoint.position = arCamera.transform.position + arCamera.transform.forward * minimumDistance;
+            Debug.Log($"Objeto pequeño: focusPoint colocado a distancia mínima {minimumDistance}m. Tamaño: {size}");
+            return;
+        }
 
-        float finalDistance = Mathf.Max(distanceByHeight, distanceByRadius) * focusPaddingFactor;
+        float aspect = (float)Screen.width / Screen.height;
+        float verticalFovRad = arCamera.fieldOfView * Mathf.Deg2Rad;
+        float horizontalFovRad = 2f * Mathf.Atan(Mathf.Tan(verticalFovRad / 2f) * aspect);
 
-        // Punto deseado en el espacio frente a la cámara
-        Vector3 desiredCenter = arCamera.transform.position + arCamera.transform.forward * finalDistance;
+        float distanceByHeight = objectHeight / (2f * Mathf.Tan(verticalFovRad / 2f));
+        float distanceByWidth = objectWidth / (2f * Mathf.Tan(horizontalFovRad / 2f));
+        float distanceByRadius = objectRadius / Mathf.Sin(Mathf.Max(verticalFovRad, horizontalFovRad) / 2f);
+
+        float finalDistance = Mathf.Max(distanceByHeight, distanceByWidth, distanceByRadius) * focusPaddingFactor;
 
         focusPoint.position = arCamera.transform.position + arCamera.transform.forward * finalDistance;
 
-        Debug.Log(focusPoint.position);
+        Debug.Log($"focusPoint colocado a {finalDistance:F2}m para encuadrar objeto {size}, FOV: V={verticalFovRad}, H={horizontalFovRad}");
     }
+
+
 
 
 
