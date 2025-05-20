@@ -18,7 +18,7 @@ public class InteractionManager : MonoBehaviour
     private bool isDragging = false;
     private Vector2 lastInputPosition;
 
-    private float focusPaddingFactor = 1.25f; 
+    private float focusPaddingFactor = 1.5f; 
     private float minimumDistance = 0.2f; // distancia mínima absoluta
 
 
