@@ -55,7 +55,6 @@ namespace UnityEngine.XR.ARFoundation.Samples
 
             if (!isPlaced)
             {
-                // OJO, no funciona "m_PointCloud.trackables.count" para contar el n�mero de puntos, hay que leer las posiciones
                 List<ARPoint> updatedPoints = new List<ARPoint>();
                 float altura = 0;
                 foreach (var pointCloud in m_PointCloud.trackables)
@@ -72,8 +71,8 @@ namespace UnityEngine.XR.ARFoundation.Samples
                 Debug.Log("Puntos detectados: " + updatedPoints.Count);
 
 
-                if (updatedPoints.Count > 5 && personHeight < -0.5f && personHeight > -2.0f)
-                {
+                if (updatedPoints.Count > 5 && personHeight < -0.5f && personHeight > -2.0f) { 
+                
                     isPlaced = true;
                     Quaternion kk = Quaternion.identity;
                     Vector3 kkeu = kk.eulerAngles;

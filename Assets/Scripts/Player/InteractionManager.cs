@@ -24,7 +24,7 @@ public class InteractionManager : MonoBehaviour
 
     void Start()
     {
-        arCamera = Camera.main;
+        arCamera = Camera.main; 
         if (arCamera == null)
         {
             Debug.LogError("¡Cámara AR no encontrada! Asigna manualmente en el Inspector.");
@@ -39,13 +39,7 @@ public class InteractionManager : MonoBehaviour
         {
             HandleObjectInteraction();
 
-            if (currentObject.CompareTag("Inspectionable") &&
-                currentObject.GetComponent<Clock>() != null)
-            {
-                currentObject.GetComponent<ClockHand>().Interact();
-
-            }
-            else if (currentObject.CompareTag("Inspectionable"))
+            if (currentObject.CompareTag("Inspectionable"))
             {
                 HandleRotation();
             }
@@ -59,7 +53,6 @@ public class InteractionManager : MonoBehaviour
 
     void HandleRotation()
     {
-        // Touch (móvil)
         if (Touchscreen.current != null && Touchscreen.current.touches.Count > 0)
         {
             var touch = Touchscreen.current.touches[0];
@@ -173,6 +166,8 @@ public class InteractionManager : MonoBehaviour
             else
             {
                 // Si no hay currentInstance o tocamos fuera de él, seguimos con la lógica normal
+
+
                 if (touchedObject.CompareTag("Collectionable"))
                 {
                     ItemObject itemObject = touchedObject.GetComponent<ItemObject>();
@@ -182,6 +177,8 @@ public class InteractionManager : MonoBehaviour
                         Destroy(touchedObject);
                     }
                 }
+
+
                 else if (touchedObject.CompareTag("Interactuable") || touchedObject.CompareTag("Inspectionable"))
                 {
                     ShowObject(touchedObject);
@@ -205,7 +202,8 @@ public class InteractionManager : MonoBehaviour
 
         currentObject = obj;
 
-        PositionFocusPointForObject(obj); // 👈 Recalculamos el punto dinámicamente
+        // Recalcular el punto
+        PositionFocusPointForObject(obj); 
 
         // Intentamos obtener el handler del propio objeto
         var inspectable = obj.GetComponent<IInspectable>();
@@ -275,9 +273,5 @@ public class InteractionManager : MonoBehaviour
 
         Debug.Log($"focusPoint colocado a {finalDistance:F2}m para encuadrar objeto {size}, FOV: V={verticalFovRad}, H={horizontalFovRad}");
     }
-
-
-
-
 
 }

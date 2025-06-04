@@ -68,9 +68,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c18361e636731c42adca4f8d5e7d879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxClosed: {fileID: 0}
-  boxOpen: {fileID: 0}
-  requiredItemName: ChestKey
+  crumpled: {fileID: 0}
+  paper: {fileID: 0}
 --- !u!1 &6898438847033608817
 GameObject:
   m_ObjectHideFlags: 0
