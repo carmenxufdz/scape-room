@@ -10,10 +10,12 @@ public class NotificationManager : MonoBehaviour
     public TextMeshProUGUI notificationText; // O usa Text si no usas TMP
     public CanvasGroup canvasGroup;
 
-    public float fadeDuration = 0.5f;
-    public float displayTime = 2f;
+    private float fadeDuration = 0.5f;
+    private float displayTime = 2f;
 
     private Coroutine currentRoutine;
+
+    private Coroutine finalRoutine;
 
     void Awake()
     {
@@ -54,5 +56,29 @@ public class NotificationManager : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = 0;
+    }
+
+    private IEnumerator Show(string message)
+    {
+        notificationText.text = message;
+
+        // Fade In
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            canvasGroup.alpha = Mathf.Lerp(0, 1, t / fadeDuration);
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        canvasGroup.alpha = 1;
+
+    }
+
+    public void finalMessage(string message)
+    {
+        if (currentRoutine != null)
+            StopCoroutine(currentRoutine);
+
+        finalRoutine = StartCoroutine(Show(message));
     }
 }

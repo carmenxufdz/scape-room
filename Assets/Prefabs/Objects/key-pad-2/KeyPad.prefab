@@ -852,7 +852,7 @@ GameObject:
   - component: {fileID: 4007201303936219234}
   m_Layer: 0
   m_Name: KeyPad
-  m_TagString: Untagged
+  m_TagString: Interactuable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

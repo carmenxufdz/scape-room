@@ -74,5 +74,9 @@ public class Door : MonoBehaviour, IInteractable
         yield return new WaitForSeconds(0.5f);
 
         NotificationManager.Instance.ShowMessage("La puerta se abrió.");
+
+        NotificationManager.Instance.finalMessage("¡ENHORABUENA!");
+
+        Timer.Instance.GameOver();
     }
 }

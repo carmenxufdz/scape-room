@@ -15,7 +15,7 @@ namespace UnityEngine.XR.ARFoundation.Samples
     /// and moved to the hit position.
     /// </summary>
     [RequireComponent(typeof(ARRaycastManager))]
-    public class PlaceOnPlane : MonoBehaviour
+    public class PlaceRoom : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("Instantiates this prefab on a plane at the touch location.")]
@@ -25,6 +25,11 @@ namespace UnityEngine.XR.ARFoundation.Samples
         ARPointCloudManager m_PointCloud;
         ARPlaneManager m_PlaneManager;
         Camera m_Camera;
+
+        public Timer timer;
+        private bool timerStarted;
+
+
 
         /// <summary>
         /// The prefab to instantiate on touch.
@@ -46,6 +51,8 @@ namespace UnityEngine.XR.ARFoundation.Samples
             m_PlaneManager = GetComponent<ARPlaneManager>();
 
             m_Camera = Camera.main;
+
+            timerStarted = false;
 
         }
 
@@ -82,6 +89,12 @@ namespace UnityEngine.XR.ARFoundation.Samples
                     m_PointCloud.SetTrackablesActive(false);
                     m_PlaneManager.SetTrackablesActive(false);
                     m_PlaneManager.enabled = false;
+
+                    if (timer != null && !timerStarted)
+                    {
+                        timerStarted = true;
+                        timer.StartTimer();
+                    }
                 }
             }
         }

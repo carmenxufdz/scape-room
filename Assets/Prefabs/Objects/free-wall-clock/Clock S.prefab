@@ -96,12 +96,12 @@ PrefabInstance:
     - target: {fileID: -5865204887889697370, guid: 9b18aa4f2954ba44cb3077fdbfc13c76,
         type: 3}
       propertyPath: m_TagString
-      value: Interactuable
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: -4748051456795032713, guid: 9b18aa4f2954ba44cb3077fdbfc13c76,
         type: 3}
       propertyPath: m_TagString
-      value: Interactuable
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: -4020985309042891687, guid: 9b18aa4f2954ba44cb3077fdbfc13c76,
         type: 3}

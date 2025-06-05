@@ -15,10 +15,14 @@ public class SafeBox : MonoBehaviour
     [Tooltip("Indica si la caja ya está abierta")]
     public bool isOpen = false;
 
+    public GameObject gameObject;
+
     void Awake()
     {
         if (puerta == null)
             Debug.LogError("CajaFuerte: falta asignar el Transform ‘puerta’", this);
+
+        gameObject.GetComponent<Collider>().enabled = false;
     }
 
     /// <summary>
@@ -29,6 +33,7 @@ public class SafeBox : MonoBehaviour
         if (isOpen) return;
         isOpen = true;
         StartCoroutine(AbrirPuerta());
+        gameObject.GetComponent<Collider>().enabled = true;
     }
 
     private IEnumerator AbrirPuerta()

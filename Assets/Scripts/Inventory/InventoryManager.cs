@@ -17,6 +17,15 @@ public class InventoryManager : MonoBehaviour
 
     public Transform ItemContent;
     public GameObject InventoryItem;
+    public GameObject InventoryPanel;
+    private bool isInventoryOpen = false;
+
+    public void ToggleInventory()
+    {
+        isInventoryOpen = !isInventoryOpen;
+        InventoryPanel.SetActive(isInventoryOpen);
+    }
+
 
 
     private void Awake()
@@ -79,7 +88,6 @@ public class InventoryManager : MonoBehaviour
             selectedItem.SetSelected(true);
         }
     }
-
 
 }
 
