@@ -56,8 +56,10 @@ public class Clock : MonoBehaviour, IInspectable
         float angMin = minutero.localEulerAngles.z;
         float angHor = horario.localEulerAngles.z;
 
-        bool okMin = Mathf.Abs(Mathf.DeltaAngle(angMin, objetivoMinutero)) < tolerancia;
-        bool okHor = Mathf.Abs(Mathf.DeltaAngle(angHor, objetivoHorario)) < tolerancia;
+        bool okMin = Mathf.Abs(Mathf.DeltaAngle(angMin, 
+            objetivoMinutero)) < tolerancia;
+        bool okHor = Mathf.Abs(Mathf.DeltaAngle(angHor, 
+            objetivoHorario)) < tolerancia;
         bool enPosicion = okMin && okHor;
 
         if (enPosicion && !puzzleResuelto && !isAnimating)
@@ -85,16 +87,17 @@ public class Clock : MonoBehaviour, IInspectable
 
         Transform t = panelSecreto.transform;
         Quaternion rotInicio = t.localRotation;
-        Quaternion rotFinal = rotInicio * Quaternion.Euler(0f, gradosApertura, 0f);
+        Quaternion rotFinal = rotInicio * Quaternion.Euler(0f, 
+            gradosApertura, 0f);
         float elapsed = 0f;
 
         while (elapsed < tiempoApertura)
         {
-            t.localRotation = Quaternion.Slerp(rotInicio, rotFinal, elapsed / tiempoApertura);
+            t.localRotation = Quaternion.Slerp(rotInicio, rotFinal, 
+                elapsed / tiempoApertura);
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         t.localRotation = rotFinal;
         isAnimating = false;
     }
@@ -107,16 +110,17 @@ public class Clock : MonoBehaviour, IInspectable
         Transform t = panelSecreto.transform;
         Quaternion rotInicio = t.localRotation;
         // Deshacer el giro de apertura:
-        Quaternion rotFinal = rotInicio * Quaternion.Euler(0f, -gradosApertura, 0f);
+        Quaternion rotFinal = rotInicio * Quaternion.Euler(0f, 
+            -gradosApertura, 0f);
         float elapsed = 0f;
 
         while (elapsed < tiempoApertura)
         {
-            t.localRotation = Quaternion.Slerp(rotInicio, rotFinal, elapsed / tiempoApertura);
+            t.localRotation = Quaternion.Slerp(rotInicio, rotFinal, 
+                elapsed / tiempoApertura);
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         t.localRotation = rotFinal;
         isAnimating = false;
     }

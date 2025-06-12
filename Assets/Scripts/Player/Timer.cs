@@ -19,7 +19,15 @@ public class Timer : MonoBehaviour
 
     public void StartTimer()
     {
-        timerIsRunning = true;  // empieza el temporizador
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     void Update()

@@ -25,11 +25,13 @@ public class TreasureBoxInteract : MonoBehaviour, IInteractable
         }
         else if (PlayerManager.Instance.IsHoldingItem())
         {
-            NotificationManager.Instance.ShowMessage("Este objeto no hace nada.");
+            NotificationManager.Instance.
+                ShowMessage("Este objeto no hace nada.");
         }
         else
         {
-            NotificationManager.Instance.ShowMessage("Tal vez con una llave puedas abrirla...");
+            NotificationManager.Instance.
+                ShowMessage("Tal vez con una llave puedas abrirla...");
         }
     }
 }

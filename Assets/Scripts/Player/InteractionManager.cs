@@ -64,17 +64,21 @@ public class InteractionManager : MonoBehaviour
                 isDragging = true;
                 lastInputPosition = position;
             }
-            else if (phase == UnityEngine.InputSystem.TouchPhase.Moved && isDragging)
+            else if (phase == UnityEngine.InputSystem.TouchPhase.Moved && 
+                isDragging)
             {
                 Vector2 delta = position - lastInputPosition;
 
                 // Rota el objeto en su espacio local para que el giro sea coherente
-                currentObject.transform.Rotate(Vector3.up, -delta.x * rotationSpeed, Space.Self);
-                currentObject.transform.Rotate(Vector3.right, delta.y * rotationSpeed, Space.Self);
+                currentObject.transform.Rotate(Vector3.up, -delta.x * 
+                    rotationSpeed, Space.Self);
+                currentObject.transform.Rotate(Vector3.right, delta.y * 
+                    rotationSpeed, Space.Self);
 
                 lastInputPosition = position;
             }
-            else if (phase == UnityEngine.InputSystem.TouchPhase.Ended || phase == UnityEngine.InputSystem.TouchPhase.Canceled)
+            else if (phase == UnityEngine.InputSystem.TouchPhase.Ended 
+                || phase == UnityEngine.InputSystem.TouchPhase.Canceled)
             {
                 isDragging = false;
             }
@@ -179,7 +183,8 @@ public class InteractionManager : MonoBehaviour
                 }
 
 
-                else if (touchedObject.CompareTag("Interactuable") || touchedObject.CompareTag("Inspectionable"))
+                else if (touchedObject.CompareTag("Interactuable") || 
+                    touchedObject.CompareTag("Inspectionable"))
                 {
                     ShowObject(touchedObject);
                 }
@@ -241,8 +246,8 @@ public class InteractionManager : MonoBehaviour
         Renderer renderer = obj.GetComponentInChildren<Renderer>();
         if (renderer == null)
         {
-            Debug.LogWarning("No se encontró un Renderer para calcular el tamaño");
-            focusPoint.position = arCamera.transform.position + arCamera.transform.forward * minimumDistance;
+            focusPoint.position = arCamera.transform.position + 
+                arCamera.transform.forward * minimumDistance;
             return;
         }
 
@@ -254,24 +259,32 @@ public class InteractionManager : MonoBehaviour
 
         if (size.magnitude < 0.05f)
         {
-            focusPoint.position = arCamera.transform.position + arCamera.transform.forward * minimumDistance;
-            Debug.Log($"Objeto pequeño: focusPoint colocado a distancia mínima {minimumDistance}m. Tamaño: {size}");
+            focusPoint.position = arCamera.transform.position + 
+                arCamera.transform.forward * minimumDistance;
             return;
         }
 
         float aspect = (float)Screen.width / Screen.height;
         float verticalFovRad = arCamera.fieldOfView * Mathf.Deg2Rad;
-        float horizontalFovRad = 2f * Mathf.Atan(Mathf.Tan(verticalFovRad / 2f) * aspect);
 
-        float distanceByHeight = objectHeight / (2f * Mathf.Tan(verticalFovRad / 2f));
-        float distanceByWidth = objectWidth / (2f * Mathf.Tan(horizontalFovRad / 2f));
-        float distanceByRadius = objectRadius / Mathf.Sin(Mathf.Max(verticalFovRad, horizontalFovRad) / 2f);
+        float horizontalFovRad = 2f * 
+            Mathf.Atan(Mathf.Tan(verticalFovRad / 2f) * aspect);
 
-        float finalDistance = Mathf.Max(distanceByHeight, distanceByWidth, distanceByRadius) * focusPaddingFactor;
+        float distanceByHeight = objectHeight / 
+            (2f * Mathf.Tan(verticalFovRad / 2f));
 
-        focusPoint.position = arCamera.transform.position + arCamera.transform.forward * finalDistance;
+        float distanceByWidth = objectWidth / 
+            (2f * Mathf.Tan(horizontalFovRad / 2f));
 
-        Debug.Log($"focusPoint colocado a {finalDistance:F2}m para encuadrar objeto {size}, FOV: V={verticalFovRad}, H={horizontalFovRad}");
+        float distanceByRadius = objectRadius / 
+            Mathf.Sin(Mathf.Max(verticalFovRad, horizontalFovRad) / 2f);
+
+        float finalDistance = Mathf.Max(distanceByHeight, distanceByWidth, 
+            distanceByRadius) * focusPaddingFactor;
+
+        focusPoint.position = arCamera.transform.position + 
+            arCamera.transform.forward * finalDistance;
+
     }
 
 }

@@ -78,12 +78,15 @@ namespace UnityEngine.XR.ARFoundation.Samples
                 Debug.Log("Puntos detectados: " + updatedPoints.Count);
 
 
-                if (updatedPoints.Count > 5 && personHeight < -0.5f && personHeight > -2.0f) { 
+                if (updatedPoints.Count > 5 && personHeight < -0.5f 
+                    && personHeight > -2.0f) { 
                 
                     isPlaced = true;
                     Quaternion kk = Quaternion.identity;
                     Vector3 kkeu = kk.eulerAngles;
-                    Vector3 pos = new Vector3(oTransform.position.x, oTransform.position.y + personHeight, oTransform.position.z);
+                    Vector3 pos = new Vector3(oTransform.position.x, 
+                        oTransform.position.y + personHeight, 
+                        oTransform.position.z);
 
                     spawnedObject = Instantiate(m_PlacedPrefab, pos, kk);
                     m_PointCloud.SetTrackablesActive(false);

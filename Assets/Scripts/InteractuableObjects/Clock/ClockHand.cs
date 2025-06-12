@@ -60,9 +60,12 @@ namespace UnityEngine.XR.ARFoundation.Samples
             if (dragPlane.Raycast(ray, out float enter))
             {
                 Vector3 worldHit = ray.GetPoint(enter);
-                Vector3 localHit = parentTransform.InverseTransformPoint(worldHit);
+                Vector3 localHit = parentTransform.
+                    InverseTransformPoint(worldHit);
 
-                float touchAngle = Mathf.Atan2(localHit.y, localHit.x) * Mathf.Rad2Deg;
+                float touchAngle = Mathf.Atan2(localHit.y, localHit.x) * 
+                    Mathf.Rad2Deg;
+
                 touchAngle -= 90f;
 
                 // Delta entre donde estabas y donde estas
@@ -73,13 +76,16 @@ namespace UnityEngine.XR.ARFoundation.Samples
             }
 
             // Detectamos fin de drag
-            if (Touchscreen.current != null && Touchscreen.current.touches.Count > 0)
+            if (Touchscreen.current != null && 
+                Touchscreen.current.touches.Count > 0)
             {
                 var t = Touchscreen.current.touches[0];
-                if (t.phase.ReadValue() == UnityEngine.InputSystem.TouchPhase.Ended)
+                if (t.phase.ReadValue() == UnityEngine.InputSystem.
+                    TouchPhase.Ended)
                     isDragging = false;
             }
-            else if (Mouse.current != null && Mouse.current.leftButton.wasReleasedThisFrame)
+            else if (Mouse.current != null && Mouse.current.
+                leftButton.wasReleasedThisFrame)
             {
                 isDragging = false;
             }
